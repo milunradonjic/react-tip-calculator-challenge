@@ -6,18 +6,6 @@ export default function App() {
   const [myPercentage, setMyPercentage] = useState(0);
   const [friendsPercentage, setFriendsPercentage] = useState(0);
 
-  function handleOnSubmitBill(e) {
-    setBill(Number(e.target.value));
-  }
-
-  function handleMyPercentage(e) {
-    setMyPercentage(Number(e.target.value));
-  }
-
-  function handleFriendsPercentage(e) {
-    setFriendsPercentage(Number(e.target.value));
-  }
-
   function onReset() {
     setBill(0);
     setMyPercentage(0);
@@ -26,11 +14,11 @@ export default function App() {
 
   return (
     <div className="App">
-      <Bill bill={bill} onSubmit={handleOnSubmitBill} />
-      <Service value={myPercentage} onSubmit={handleMyPercentage}>
+      <Bill bill={bill} onChange={setBill} />
+      <Service value={myPercentage} onChange={setMyPercentage}>
         How did you like the service?
       </Service>
-      <Service value={friendsPercentage} onSubmit={handleFriendsPercentage}>
+      <Service value={friendsPercentage} onChange={setFriendsPercentage}>
         How did your friend like the service?
       </Service>
       <ToPay
@@ -43,20 +31,24 @@ export default function App() {
   );
 }
 
-function Bill({ bill, onSubmit }) {
+function Bill({ bill, onChange }) {
   return (
     <div>
       <span>How much was the bill?</span>
-      <input type="text" value={bill} onChange={onSubmit} />
+      <input
+        type="text"
+        value={bill}
+        onChange={(e) => onChange(Number(e.target.value))}
+      />
     </div>
   );
 }
 
-function Service({ value, onSubmit, children }) {
+function Service({ value, onChange, children }) {
   return (
     <div>
       {children}
-      <select onChange={onSubmit} value={value}>
+      <select onChange={(e) => onChange(Number(e.target.value))} value={value}>
         <SelectPercentage value={0}>Dissatisfied (0%)</SelectPercentage>
         <SelectPercentage value={5}>It was okay (5%)</SelectPercentage>
         <SelectPercentage value={10}>It was good (10%)</SelectPercentage>
